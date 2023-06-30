@@ -47,6 +47,7 @@ public class JdbcCategoryDao implements CategoryDao {
     @Override
     public Category getById(int categoryId) {
         String query = "SELECT * FROM categories WHERE category_id = ?;";
+        Category category = null;
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -58,13 +59,13 @@ public class JdbcCategoryDao implements CategoryDao {
                     String name = resultSet.getString(2);
                     String description = resultSet.getString(3);
 
-                    Category category = new Category(categoryIdFromDB, name, description);
+                    category = new Category(categoryIdFromDB, name, description);
                 }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return null;
+        return category;
     }
 
     @Override
